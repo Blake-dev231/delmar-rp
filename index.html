@@ -24,6 +24,7 @@
           <a href="#world">The world</a>
           <a href="#departments">Departments</a>
           <a href="#start">Getting started</a>
+          <button class="nav-profile" type="button" aria-haspopup="dialog" aria-controls="profile-panel">Profile</button>
           <a class="nav-forms" href="#start">forms</a>
           <a class="nav-discord" href="https://discord.com" target="_blank" rel="noreferrer">Join Discord <span>↗</span></a>
         </nav>
@@ -82,6 +83,28 @@
 
       <footer class="site-footer"><a class="brand" href="#top"><span class="brand-mark">D</span><span><strong>DELMAR</strong><small>ROLEPLAY</small></span></a><p>Good stories need good people.</p><span class="footer-meta">© 2024 Delmar RP <span class="footer-dot">·</span> Los Santos, CA</span></footer>
     </div>
+    <div class="profile-backdrop" hidden></div>
+    <aside class="profile-panel" id="profile-panel" role="dialog" aria-modal="true" aria-labelledby="profile-title" hidden>
+      <div class="profile-panel-header">
+        <div><p class="eyebrow"><span class="eyebrow-line"></span> Your Delmar identity</p><h2 id="profile-title">Your <em>profile.</em></h2></div>
+        <button class="profile-close" type="button" aria-label="Close profile">×</button>
+      </div>
+      <div class="profile-avatar" aria-hidden="true">D</div>
+      <p class="profile-status"><span class="status-light"></span><span id="profile-summary">Ready to write your story</span></p>
+      <form class="profile-form">
+        <label for="profile-name">Display name</label>
+        <input id="profile-name" name="name" type="text" maxlength="32" placeholder="Your name" />
+        <label for="profile-role">Role in Delmar</label>
+        <select id="profile-role" name="role">
+          <option>Exploring the city</option>
+          <option>Public safety</option>
+          <option>Medical services</option>
+          <option>Local business</option>
+          <option>Independent civilian</option>
+        </select>
+        <button class="button button-primary" type="submit">Save profile <span>↗</span></button>
+      </form>
+    </aside>
     <div class="toast" role="status" aria-live="polite">Server address copied</div>
     <script src="script.js"></script>
   </body>
