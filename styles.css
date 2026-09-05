@@ -25,6 +25,7 @@ button { font: inherit; }
 .brand small { margin-top: 4px; color: var(--muted); font: 500 8px var(--mono); letter-spacing: .24em; }
 .site-nav { display: flex; align-items: center; gap: 36px; font-size: 12px; font-weight: 700; }
 .site-nav a:not(.nav-discord) { color: #51485d; }
+.site-nav .nav-forms { color: #130d1d; }
 .site-nav a:hover, .text-link:hover { color: var(--orange); }
 .nav-discord { border-bottom: 1px solid var(--ink); padding: 7px 0; }
 .nav-discord span, .text-link span, .button span { color: var(--orange); margin-left: 9px; }
@@ -45,8 +46,7 @@ h1 em, h2 em { color: var(--orange); font-style: normal; }
 .text-link { font-size: 12px; font-weight: 800; }
 .hero-note { display: flex; gap: 9px; align-items: center; margin-top: 76px; color: var(--muted); font: 10px var(--mono); }
 .pulse-dot, .status-light { width: 7px; height: 7px; border-radius: 50%; background: var(--lime); box-shadow: 0 0 0 4px rgba(173, 114, 245, .18); }
-.hero-visual { min-height: 488px; position: relative; margin-top: 28px; background: linear-gradient(145deg, rgba(26, 12, 48, .08), rgba(26, 12, 48, .68)), url("image.png") center/cover; }
-.hero-visual::before { content: "forms"; position: absolute; left: 0; top: -24px; color: var(--orange); font: 500 10px var(--mono); letter-spacing: .16em; text-transform: uppercase; }
+.hero-visual { min-height: 488px; position: relative; background: linear-gradient(145deg, rgba(26, 12, 48, .08), rgba(26, 12, 48, .68)), url("image.png") center/cover; }
 .visual-shade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(13, 30, 30, .12), rgba(13, 30, 30, .45)); }
 .location-tag { position: absolute; top: 35px; left: 38px; color: #f1eee7; font: 500 11px var(--mono); letter-spacing: .06em; }
 .location-tag small { display: block; margin: 6px 0 0 23px; color: rgba(241, 238, 231, .65); font-size: 9px; }
