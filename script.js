@@ -9,13 +9,35 @@ const profileForm = document.querySelector('.profile-form');
 const profileName = document.querySelector('#profile-name');
 const profileRole = document.querySelector('#profile-role');
 const profileSummary = document.querySelector('#profile-summary');
+const profileAvatar = document.querySelector('#profile-avatar');
+const profileAvatarInput = document.querySelector('#profile-avatar-input');
+const profileTheme = document.querySelector('#profile-theme');
+const adminPanel = document.querySelector('#admin-panel');
+const accountList = document.querySelector('#account-list');
+const accountForm = document.querySelector('#account-form');
+const newAccount = document.querySelector('#new-account');
+
+const roleOptions = ['Member', 'Moderator', 'Public Safety', 'Medical Services', 'Business', 'Admin'];
+const defaultAccounts = [{ id: 'owner', name: 'Delmar Owner', role: 'Admin' }, { id: 'alex', name: 'Alex Rivera', role: 'Public Safety' }, { id: 'jordan', name: 'Jordan Lee', role: 'Member' }];
+let accounts = JSON.parse(localStorage.getItem('delmar-accounts') || 'null') || defaultAccounts;
+let pendingAvatar = '';
 
 const savedProfile = JSON.parse(localStorage.getItem('delmar-profile') || 'null');
 if (savedProfile) {
   profileName.value = savedProfile.name || '';
-  profileRole.value = savedProfile.role || profileRole.value;
-  profileSummary.textContent = savedProfile.name ? `${savedProfile.name} · ${savedProfile.role}` : savedProfile.role;
+  profileTheme.value = savedProfile.theme || profileTheme.value;
+  pendingAvatar = savedProfile.avatar || '';
 }
+
+const currentAccount = () => accounts.find((account) => account.id === 'owner');
+const applyTheme = (theme) => { document.body.dataset.theme = theme || 'coast'; };
+const escapeHtml = (value) => value.replace(/[&<>'"]/g, (character) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[character]));
+const renderAvatar = (avatar, name) => { profileAvatar.textContent = avatar ? '' : (name || 'D').charAt(0).toUpperCase(); profileAvatar.style.backgroundImage = avatar ? `url(${avatar})` : ''; profileAvatar.classList.toggle('has-image', Boolean(avatar)); };
+const renderAdminPanel = () => { const isAdmin = currentAccount()?.role === 'Admin'; adminPanel.hidden = !isAdmin; if (!isAdmin) return; accountList.innerHTML = accounts.map((account) => { const safeName = escapeHtml(account.name); return `<div class="account-row"><div><strong>${safeName}</strong><small>${account.id === 'owner' ? 'You' : 'Community account'}</small></div><select data-account-id="${account.id}" aria-label="Role for ${safeName}">${roleOptions.map((role) => `<option ${role === account.role ? 'selected' : ''}>${role}</option>`).join('')}</select></div>`; }).join(''); };
+applyTheme(savedProfile?.theme);
+renderAvatar(pendingAvatar, savedProfile?.name);
+profileRole.textContent = currentAccount()?.role || 'Member';
+renderAdminPanel();
 
 const setProfileOpen = (isOpen) => {
   profilePanel.hidden = !isOpen;
@@ -29,14 +51,20 @@ profileClose?.addEventListener('click', () => setProfileOpen(false));
 profileBackdrop?.addEventListener('click', () => setProfileOpen(false));
 profileForm?.addEventListener('submit', (event) => {
   event.preventDefault();
-  const profile = { name: profileName.value.trim(), role: profileRole.value };
+  const profile = { name: profileName.value.trim(), theme: profileTheme.value, avatar: pendingAvatar };
   localStorage.setItem('delmar-profile', JSON.stringify(profile));
-  profileSummary.textContent = profile.name ? `${profile.name} · ${profile.role}` : profile.role;
+  applyTheme(profile.theme);
+  renderAvatar(profile.avatar, profile.name);
+  profileSummary.textContent = profile.name ? `${profile.name} · ${currentAccount().role}` : currentAccount().role;
   setProfileOpen(false);
   toast.textContent = 'Profile saved';
   toast.classList.add('show');
   window.setTimeout(() => toast.classList.remove('show'), 2200);
 });
+
+profileAvatarInput?.addEventListener('change', () => { const file = profileAvatarInput.files?.[0]; if (!file) return; const reader = new FileReader(); reader.addEventListener('load', () => { pendingAvatar = reader.result; renderAvatar(pendingAvatar, profileName.value); }); reader.readAsDataURL(file); });
+accountList?.addEventListener('change', (event) => { if (!event.target.matches('[data-account-id]')) return; const account = accounts.find((item) => item.id === event.target.dataset.accountId); if (!account) return; account.role = event.target.value; localStorage.setItem('delmar-accounts', JSON.stringify(accounts)); profileRole.textContent = currentAccount().role; profileSummary.textContent = profileName.value ? `${profileName.value} · ${currentAccount().role}` : currentAccount().role; renderAdminPanel(); toast.textContent = `${account.name} is now ${account.role}`; toast.classList.add('show'); window.setTimeout(() => toast.classList.remove('show'), 2200); });
+accountForm?.addEventListener('submit', (event) => { event.preventDefault(); const name = newAccount.value.trim(); if (!name) return; const id = `${name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-${Date.now()}`; accounts.push({ id, name, role: 'Member' }); localStorage.setItem('delmar-accounts', JSON.stringify(accounts)); newAccount.value = ''; renderAdminPanel(); });
 
 document.addEventListener('keydown', (event) => {
   if (event.key === 'Escape' && !profilePanel.hidden) setProfileOpen(false);

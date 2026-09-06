@@ -89,21 +89,28 @@
         <div><p class="eyebrow"><span class="eyebrow-line"></span> Your Delmar identity</p><h2 id="profile-title">Your <em>profile.</em></h2></div>
         <button class="profile-close" type="button" aria-label="Close profile">×</button>
       </div>
-      <div class="profile-avatar" aria-hidden="true">D</div>
+      <div class="profile-avatar" id="profile-avatar" aria-hidden="true">D</div>
       <p class="profile-status"><span class="status-light"></span><span id="profile-summary">Ready to write your story</span></p>
       <form class="profile-form">
         <label for="profile-name">Display name</label>
         <input id="profile-name" name="name" type="text" maxlength="32" placeholder="Your name" />
-        <label for="profile-role">Role in Delmar</label>
-        <select id="profile-role" name="role">
-          <option>Exploring the city</option>
-          <option>Public safety</option>
-          <option>Medical services</option>
-          <option>Local business</option>
-          <option>Independent civilian</option>
+        <label for="profile-avatar-input">Profile picture</label>
+        <input id="profile-avatar-input" type="file" accept="image/png,image/jpeg,image/webp" />
+        <label for="profile-theme">Website theme</label>
+        <select id="profile-theme" name="theme">
+          <option value="coast">Coastline</option>
+          <option value="ember">Ember</option>
+          <option value="midnight">Midnight</option>
         </select>
+        <p class="assigned-role">Assigned role <strong id="profile-role">Member</strong></p>
         <button class="button button-primary" type="submit">Save profile <span>↗</span></button>
       </form>
+      <section class="admin-panel" id="admin-panel" hidden>
+        <div class="admin-heading"><div><p class="eyebrow"><span class="eyebrow-line"></span> Access control</p><h3>Admin <em>panel.</em></h3></div><span class="admin-lock">ADMIN</span></div>
+        <p class="admin-intro">Assign roles to community accounts. People cannot change their own access.</p>
+        <div class="account-list" id="account-list"></div>
+        <form class="account-form" id="account-form"><label for="new-account">Add account</label><div><input id="new-account" type="text" maxlength="32" placeholder="Display name" required /><button class="button" type="submit" aria-label="Add account">+</button></div></form>
+      </section>
     </aside>
     <div class="toast" role="status" aria-live="polite">Server address copied</div>
     <script src="script.js"></script>
