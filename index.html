@@ -84,6 +84,31 @@
 
       <footer class="site-footer"><a class="brand" href="#top"><span class="brand-mark">D</span><span><strong>DELMAR</strong><small>ROLEPLAY</small></span></a><p>Good stories need good people.</p><span class="footer-meta">© 2024 Delmar RP <span class="footer-dot">·</span> Los Santos, CA</span></footer>
     </div>
+    <section class="auth-gate" id="auth-gate" aria-labelledby="auth-title">
+      <div class="auth-card">
+        <p class="eyebrow"><span class="eyebrow-line"></span> Delmar RP access</p>
+        <h2 id="auth-title">Welcome to <em>Delmar.</em></h2>
+        <p class="auth-intro" id="auth-intro">Create an account to enter the community website.</p>
+        <div class="auth-tabs"><button class="auth-tab active" id="create-tab" type="button">Create account</button><button class="auth-tab" id="login-tab" type="button">Log in</button></div>
+        <form class="auth-form" id="create-account-form">
+          <label for="auth-discord-id">What's your Discord ID?</label>
+          <input id="auth-discord-id" type="text" maxlength="64" placeholder="123456789012345678" required />
+          <label for="auth-discord-name">What's your name in the main Discord?</label>
+          <input id="auth-discord-name" type="text" maxlength="64" placeholder="Your Discord name" required />
+          <label for="auth-display-name">Display name on the website?</label>
+          <input id="auth-display-name" type="text" maxlength="32" placeholder="Your website name" required />
+          <button class="button button-primary" type="submit">Create account <span>↗</span></button>
+        </form>
+        <form class="auth-form" id="login-form" hidden>
+          <label for="login-discord-id">Discord ID</label>
+          <input id="login-discord-id" type="text" maxlength="64" placeholder="Your Discord ID" required />
+          <label for="login-discord-name">Name in the main Discord</label>
+          <input id="login-discord-name" type="text" maxlength="64" placeholder="Your Discord name" required />
+          <button class="button button-primary" type="submit">Log in <span>↗</span></button>
+        </form>
+        <p class="auth-message" id="auth-message" role="alert"></p>
+      </div>
+    </section>
     <div class="profile-backdrop" hidden></div>
     <aside class="profile-panel" id="profile-panel" role="dialog" aria-modal="true" aria-labelledby="profile-title" hidden>
       <div class="profile-panel-header">
@@ -105,6 +130,7 @@
         </select>
         <p class="assigned-role">Assigned role <strong id="profile-role">Member</strong></p>
         <button class="button button-primary" type="submit">Save profile <span>↗</span></button>
+        <button class="logout-button" id="logout-button" type="button">Log out</button>
       </form>
     </aside>
     <aside class="profile-panel admin-drawer" id="admin-panel" role="dialog" aria-modal="true" aria-labelledby="admin-title" hidden>
