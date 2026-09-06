@@ -26,7 +26,7 @@ button { font: inherit; }
 .site-nav { display: flex; align-items: center; gap: 36px; font-size: 12px; font-weight: 700; }
 .site-nav a:not(.nav-discord) { color: #51485d; }
 .site-nav .nav-forms { color: #130d1d; }
-.nav-profile { padding: 0; border: 0; background: transparent; color: #51485d; font: inherit; cursor: pointer; }
+.nav-profile, .nav-admin { padding: 0; border: 0; background: transparent; color: #51485d; font: inherit; cursor: pointer; }.nav-admin { color: var(--orange); }
 .nav-profile:hover { color: var(--orange); }
 .site-nav a:hover, .text-link:hover { color: var(--orange); }
 .nav-discord { border-bottom: 1px solid var(--ink); padding: 7px 0; }
