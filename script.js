@@ -17,8 +17,9 @@ const accountList = document.querySelector('#account-list');
 const accountForm = document.querySelector('#account-form');
 const newAccount = document.querySelector('#new-account');
 
-const roleOptions = ['Member', 'Moderator', 'Public Safety', 'Medical Services', 'Business', 'Admin'];
-const defaultAccounts = [{ id: 'owner', name: 'Delmar Owner', role: 'Admin' }, { id: 'alex', name: 'Alex Rivera', role: 'Public Safety' }, { id: 'jordan', name: 'Jordan Lee', role: 'Member' }];
+const roleOptions = ['Owner', 'Server Manager', 'Executive', 'Bussiness Owner', 'Department Administrator', 'Member', 'Moderator', 'Public Safety', 'Medical Services', 'Business', 'Admin', 'Exploring the city', 'Local business', 'Independent civilian'];
+const privilegedRoles = new Set(['owner', 'server manager', 'executive', 'admin']);
+const defaultAccounts = [{ id: 'owner', name: 'Delmar Owner', role: 'Owner' }, { id: 'alex', name: 'Alex Rivera', role: 'Public Safety' }, { id: 'jordan', name: 'Jordan Lee', role: 'Member' }];
 let accounts = JSON.parse(localStorage.getItem('delmar-accounts') || 'null') || defaultAccounts;
 let pendingAvatar = '';
 
@@ -33,7 +34,7 @@ const currentAccount = () => accounts.find((account) => account.id === 'owner');
 const applyTheme = (theme) => { document.body.dataset.theme = theme || 'coast'; };
 const escapeHtml = (value) => value.replace(/[&<>'"]/g, (character) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[character]));
 const renderAvatar = (avatar, name) => { profileAvatar.textContent = avatar ? '' : (name || 'D').charAt(0).toUpperCase(); profileAvatar.style.backgroundImage = avatar ? `url(${avatar})` : ''; profileAvatar.classList.toggle('has-image', Boolean(avatar)); };
-const renderAdminPanel = () => { const isAdmin = currentAccount()?.role === 'Admin'; adminPanel.hidden = !isAdmin; if (!isAdmin) return; accountList.innerHTML = accounts.map((account) => { const safeName = escapeHtml(account.name); return `<div class="account-row"><div><strong>${safeName}</strong><small>${account.id === 'owner' ? 'You' : 'Community account'}</small></div><select data-account-id="${account.id}" aria-label="Role for ${safeName}">${roleOptions.map((role) => `<option ${role === account.role ? 'selected' : ''}>${role}</option>`).join('')}</select></div>`; }).join(''); };
+const renderAdminPanel = () => { const isPrivileged = privilegedRoles.has(currentAccount()?.role?.toLowerCase()); adminPanel.hidden = !isPrivileged; if (!isPrivileged) return; accountList.innerHTML = accounts.map((account) => { const safeName = escapeHtml(account.name); const options = roleOptions.includes(account.role) ? roleOptions : [account.role, ...roleOptions]; return `<div class="account-row"><div><strong>${safeName}</strong><small>${account.id === 'owner' ? 'You' : 'Community account'}</small></div><select data-account-id="${account.id}" aria-label="Role for ${safeName}">${options.map((role) => `<option ${role === account.role ? 'selected' : ''}>${role}</option>`).join('')}</select></div>`; }).join(''); };
 applyTheme(savedProfile?.theme);
 renderAvatar(pendingAvatar, savedProfile?.name);
 profileRole.textContent = currentAccount()?.role || 'Member';
