@@ -38,10 +38,14 @@ const hadStoredAccounts = Boolean(localStorage.getItem('delmar-accounts'));
 let accounts = JSON.parse(localStorage.getItem('delmar-accounts') || 'null') || defaultAccounts;
 accounts = accounts.map((account) => { const roles = Array.isArray(account.roles) ? account.roles : [account.role || 'Member']; if (account.id === 'owner' && !roles.some((role) => role.toLowerCase() === 'admin')) roles.push('Admin'); return { ...account, name: account.name || account.displayName || 'Unnamed account', discordId: account.discordId || account.id, discordName: account.discordName || account.name || 'Unknown', roles }; });
 localStorage.setItem('delmar-accounts', JSON.stringify(accounts));
-let activeAccountId = localStorage.getItem('delmar-active-account');
+const savedSession = JSON.parse(localStorage.getItem('delmar-session') || 'null');
+let activeAccountId = localStorage.getItem('delmar-active-account') || savedSession?.accountId;
 const accountRoles = (account) => account?.roles || ['Member'];
 const hasRole = (account, role) => accountRoles(account).some((accountRole) => accountRole.toLowerCase() === role.toLowerCase());
 const roleSummary = (account) => accountRoles(account).join(' · ') || 'No role assigned';
+const currentAccount = () => accounts.find((account) => account.id === activeAccountId);
+const rememberAccount = (account) => { activeAccountId = account.id; localStorage.setItem('delmar-active-account', account.id); localStorage.setItem('delmar-session', JSON.stringify({ accountId: account.id, discordId: account.discordId })); };
+if (!currentAccount() && savedSession?.discordId) { const recoveredAccount = accounts.find((account) => account.discordId === savedSession.discordId); if (recoveredAccount) rememberAccount(recoveredAccount); }
 let pendingAvatar = '';
 
 const savedProfile = JSON.parse(localStorage.getItem('delmar-profile') || 'null');
@@ -51,7 +55,6 @@ if (savedProfile) {
   pendingAvatar = savedProfile.avatar || '';
 }
 
-const currentAccount = () => accounts.find((account) => account.id === activeAccountId);
 const applyTheme = (theme) => { document.body.dataset.theme = theme || 'coast'; };
 const escapeHtml = (value) => value.replace(/[&<>'"]/g, (character) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[character]));
 const renderAvatar = (avatar, name) => { profileAvatar.textContent = avatar ? '' : (name || 'D').charAt(0).toUpperCase(); profileAvatar.style.backgroundImage = avatar ? `url(${avatar})` : ''; profileAvatar.classList.toggle('has-image', Boolean(avatar)); };
@@ -66,9 +69,9 @@ const showAuthGate = (message = '', mode = 'login') => { authGate.hidden = false
 const hideAuthGate = () => { authGate.hidden = true; };
 createTab.addEventListener('click', () => setAuthMode('create'));
 loginTab.addEventListener('click', () => setAuthMode('login'));
-createAccountForm.addEventListener('submit', (event) => { event.preventDefault(); const discordId = authDiscordId.value.trim(); const discordName = authDiscordName.value.trim(); const displayName = authDisplayName.value.trim(); if (accounts.some((account) => account.discordId?.toLowerCase() === discordId.toLowerCase())) { authMessage.textContent = 'An account with that Discord ID already exists. Log in instead.'; return; } const account = { id: `account-${Date.now()}`, discordId, discordName, name: displayName, roles: ['Member'] }; accounts.push(account); activeAccountId = account.id; localStorage.setItem('delmar-accounts', JSON.stringify(accounts)); localStorage.setItem('delmar-active-account', activeAccountId); localStorage.setItem('delmar-profile', JSON.stringify({ name: displayName, theme: 'coast', avatar: '' })); profileName.value = displayName; profileRole.textContent = roleSummary(account); profileSummary.textContent = `${displayName} · ${roleSummary(account)}`; renderAvatar('', displayName); renderAdminPanel(); hideAuthGate(); });
-loginForm.addEventListener('submit', (event) => { event.preventDefault(); const discordId = loginDiscordId.value.trim().toLowerCase(); const discordName = loginDiscordName.value.trim().toLowerCase(); const account = accounts.find((item) => item.discordId?.toLowerCase() === discordId && item.discordName?.toLowerCase() === discordName); if (!account) { authMessage.textContent = 'We could not find an account with those details.'; return; } activeAccountId = account.id; localStorage.setItem('delmar-active-account', activeAccountId); profileName.value = account.name; profileRole.textContent = roleSummary(account); profileSummary.textContent = `${account.name} · ${roleSummary(account)}`; renderAdminPanel(); hideAuthGate(); });
-logoutButton.addEventListener('click', () => { localStorage.removeItem('delmar-active-account'); setProfileOpen(false); showAuthGate('Log in to return, or create a new account.'); });
+createAccountForm.addEventListener('submit', (event) => { event.preventDefault(); const discordId = authDiscordId.value.trim(); const discordName = authDiscordName.value.trim(); const displayName = authDisplayName.value.trim(); if (accounts.some((account) => account.discordId?.toLowerCase() === discordId.toLowerCase())) { authMessage.textContent = 'An account with that Discord ID already exists. Log in instead.'; return; } const account = { id: `account-${Date.now()}`, discordId, discordName, name: displayName, roles: ['Member'] }; accounts.push(account); rememberAccount(account); localStorage.setItem('delmar-accounts', JSON.stringify(accounts)); localStorage.setItem('delmar-profile', JSON.stringify({ name: displayName, theme: 'coast', avatar: '' })); profileName.value = displayName; profileRole.textContent = roleSummary(account); profileSummary.textContent = `${displayName} · ${roleSummary(account)}`; renderAvatar('', displayName); renderAdminPanel(); hideAuthGate(); });
+loginForm.addEventListener('submit', (event) => { event.preventDefault(); const discordId = loginDiscordId.value.trim().toLowerCase(); const discordName = loginDiscordName.value.trim().toLowerCase(); const account = accounts.find((item) => item.discordId?.toLowerCase() === discordId && item.discordName?.toLowerCase() === discordName); if (!account) { authMessage.textContent = 'We could not find an account with those details.'; return; } rememberAccount(account); profileName.value = account.name; profileRole.textContent = roleSummary(account); profileSummary.textContent = `${account.name} · ${roleSummary(account)}`; renderAdminPanel(); hideAuthGate(); });
+logoutButton.addEventListener('click', () => { localStorage.removeItem('delmar-active-account'); localStorage.removeItem('delmar-session'); activeAccountId = null; setProfileOpen(false); showAuthGate('Log in to return, or create a new account.'); });
 if (!currentAccount()) showAuthGate('', hadStoredAccounts ? 'login' : 'create');
 else hideAuthGate();
 
