@@ -15,7 +15,6 @@ const profileSummary = document.querySelector('#profile-summary');
 const profileAvatar = document.querySelector('#profile-avatar');
 const profileAvatarInput = document.querySelector('#profile-avatar-input');
 const profileTheme = document.querySelector('#profile-theme');
-const adminPanel = document.querySelector('#admin-panel');
 const accountList = document.querySelector('#account-list');
 const accountForm = document.querySelector('#account-form');
 const newAccount = document.querySelector('#new-account');
