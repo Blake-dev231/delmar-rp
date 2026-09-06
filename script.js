@@ -54,7 +54,8 @@ profileButton?.addEventListener('click', () => setProfileOpen(true));
 profileClose?.addEventListener('click', () => setProfileOpen(false));
 const setAdminOpen = (isOpen) => { adminDrawer.hidden = !isOpen; if (isOpen) { profilePanel.hidden = true; profileButton.setAttribute('aria-expanded', 'false'); } profileBackdrop.hidden = !isOpen; adminButton.setAttribute('aria-expanded', String(isOpen)); if (isOpen) accountList.querySelector('select')?.focus(); };
 adminButton?.addEventListener('click', () => setAdminOpen(true));
-adminClose?.addEventListener('click', () => setAdminOpen(false));
+adminClose?.addEventListener('click', (event) => { event.preventDefault(); event.stopPropagation(); setAdminOpen(false); });
+document.addEventListener('click', (event) => { if (event.target.closest('.admin-close')) { event.preventDefault(); setAdminOpen(false); } });
 profileBackdrop?.addEventListener('click', () => { setProfileOpen(false); setAdminOpen(false); });
 profileForm?.addEventListener('submit', (event) => {
   event.preventDefault();
