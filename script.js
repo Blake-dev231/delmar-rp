@@ -33,13 +33,15 @@ const loginDiscordId = document.querySelector('#login-discord-id');
 const loginDiscordName = document.querySelector('#login-discord-name');
 
 const roleOptions = ['Owner', 'Server Manager', 'Executive', 'Bussiness Owner', 'Department Administrator', 'Member', 'Moderator', 'Public Safety', 'Medical Services', 'Business', 'Admin', 'Exploring the city', 'Local business', 'Independent civilian'];
-const defaultAccounts = [{ id: 'owner', name: 'Delmar Owner', roles: ['Owner', 'Admin'] }, { id: 'alex', name: 'Alex Rivera', roles: ['Public Safety'] }, { id: 'jordan', name: 'Jordan Lee', roles: ['Member'] }];
+const ownerDiscordId = '1249163994116259840';
+const defaultAccounts = [{ id: 'owner', name: 'Delmar Owner', discordId: ownerDiscordId, discordName: 'Delmar Owner', roles: ['Owner', 'Admin'] }, { id: 'alex', name: 'Alex Rivera', roles: ['Public Safety'] }, { id: 'jordan', name: 'Jordan Lee', roles: ['Member'] }];
 const hadStoredAccounts = Boolean(localStorage.getItem('delmar-accounts'));
 let accounts = JSON.parse(localStorage.getItem('delmar-accounts') || 'null') || defaultAccounts;
-accounts = accounts.map((account) => { const roles = Array.isArray(account.roles) ? account.roles : [account.role || 'Member']; if (account.id === 'owner' && !roles.some((role) => role.toLowerCase() === 'admin')) roles.push('Admin'); return { ...account, name: account.name || account.displayName || 'Unnamed account', discordId: account.discordId || account.id, discordName: account.discordName || account.name || 'Unknown', roles }; });
+accounts = accounts.map((account) => { const roles = Array.isArray(account.roles) ? account.roles : [account.role || 'Member']; const isOwner = account.id === 'owner' || account.discordId === ownerDiscordId; if (isOwner && !roles.some((role) => role.toLowerCase() === 'owner')) roles.push('Owner'); if (isOwner && !roles.some((role) => role.toLowerCase() === 'admin')) roles.push('Admin'); return { ...account, id: isOwner ? 'owner' : account.id, name: isOwner ? (account.name || 'Owner') : (account.name || account.displayName || 'Unnamed account'), discordId: isOwner ? ownerDiscordId : (account.discordId || account.id), discordName: account.discordName || account.name || 'Unknown', roles }; });
 localStorage.setItem('delmar-accounts', JSON.stringify(accounts));
 const savedSession = JSON.parse(localStorage.getItem('delmar-session') || 'null');
 let activeAccountId = localStorage.getItem('delmar-active-account') || savedSession?.accountId;
+if (accounts.some((account) => account.id === activeAccountId && account.discordId === ownerDiscordId)) activeAccountId = 'owner';
 const accountRoles = (account) => account?.roles || ['Member'];
 const hasRole = (account, role) => accountRoles(account).some((accountRole) => accountRole.toLowerCase() === role.toLowerCase());
 const roleSummary = (account) => accountRoles(account).join(' · ') || 'No role assigned';
