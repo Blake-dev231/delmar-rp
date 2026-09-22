@@ -70,12 +70,11 @@ h2 { margin: 26px 0 0; font-size: clamp(43px, 5vw, 69px); line-height: .96; font
 .section-heading { display: flex; justify-content: space-between; align-items: end; margin-bottom: 46px; }
 .section-heading .eyebrow { margin-bottom: 0; }
 .section-heading h2 { margin-top: 21px; }
-.department-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.department-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
 .department-card { display: block; min-height: 380px; position: relative; overflow: hidden; color: var(--paper); background-position: center; background-size: cover; }
-.card-police { background-image: url("https://images.unsplash.com/photo-1453873531674-2151bcd01707?auto=format&fit=crop&w=700&q=80"); }
-.card-medical { background-image: url("https://images.unsplash.com/photo-1584982751601-97dcc096659c?auto=format&fit=crop&w=700&q=80"); }
-.card-business { background-image: url("https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=700&q=80"); }
-.card-civilian { background-image: url("https://images.unsplash.com/photo-1517457373958-b7bdd4587205?auto=format&fit=crop&w=700&q=80"); }
+.card-police { background-image: url("https://images.unsplash.com/photo-1485968579580-b6d095142e6e?auto=format&fit=crop&w=700&q=80"); }
+.card-medical { background-image: url("https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=700&q=80"); }
+.card-business { background-image: url("https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=700&q=80"); }
 .card-overlay { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(16, 26, 25, .1), rgba(16, 26, 25, .85)); }
 .card-content { position: absolute; inset: 0; padding: 24px; display: flex; flex-direction: column; }
 .card-index { color: var(--lime); }
