@@ -1,6 +1,6 @@
-# Delmar Resale
+# ReUp Market
 
-The Delmar Resale marketplace website. It is a lightweight static site, so it can be previewed without a build step.
+The ReUp Market marketplace website. It is a lightweight static site, so it can be previewed without a build step.
 
 ## Run locally
 
