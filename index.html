@@ -26,6 +26,7 @@
           <a href="#sell-overlay" data-sell-trigger="true">Sell to us</a>
           <button class="nav-profile" type="button" aria-haspopup="dialog" aria-controls="profile-panel">Profile</button>
           <button class="nav-admin" type="button" aria-haspopup="dialog" aria-controls="admin-panel">Admin</button>
+          <button class="nav-pending" type="button" aria-haspopup="dialog" aria-controls="pending-sells-overlay" hidden>pending sells</button>
           <a class="nav-forms" href="#sell-overlay" data-sell-trigger="true">sell an item</a>
           <a class="nav-discord" href="#departments">Browse listings <span>↗</span></a>
         </nav>
@@ -190,6 +191,15 @@
                 <button class="button sell-cancel" type="button">Cancel</button>
               </div>
             </form>
+          </div>
+        </section>
+
+        <section class="pending-sells-overlay" id="pending-sells-overlay" hidden>
+          <div class="pending-sells-modal" role="dialog" aria-modal="true" aria-labelledby="pending-sells-title">
+            <button class="pending-sells-close" type="button" aria-label="Close pending sells">×</button>
+            <p class="eyebrow"><span class="eyebrow-line"></span> Business owner view</p>
+            <h2 id="pending-sells-title">Pending sells</h2>
+            <div class="pending-sells-list" id="pending-sells-list"></div>
           </div>
         </section>
 

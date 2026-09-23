@@ -15,6 +15,7 @@ document.addEventListener('click', (event) => {
 
 const profileButton = document.querySelector('.nav-profile');
 const adminButton = document.querySelector('.nav-admin');
+const pendingSellsButton = document.querySelector('.nav-pending');
 const profilePanel = document.querySelector('.profile-panel');
 const adminDrawer = document.querySelector('.admin-drawer');
 const profileBackdrop = document.querySelector('.profile-backdrop');
@@ -45,7 +46,7 @@ const authDisplayName = document.querySelector('#auth-display-name');
 const loginDiscordId = document.querySelector('#login-discord-id');
 const loginDiscordName = document.querySelector('#login-discord-name');
 
-const roleOptions = ['Owner', 'Marketplace Manager', 'Executive', 'Seller Partner', 'Catalog Administrator', 'Buyer', 'Moderator', 'Verified Seller', 'Customer Support', 'Business Seller', 'Admin', 'Exploring the marketplace', 'Local seller', 'Independent buyer'];
+const roleOptions = ['Owner', 'Marketplace Manager', 'Executive', 'Seller Partner', 'Catalog Administrator', 'Buyer', 'Moderator', 'Verified Seller', 'Customer Support', 'Business Seller', 'Bussiness Owner', 'Admin', 'Exploring the marketplace', 'Local seller', 'Independent buyer'];
 const ownerDiscordId = '1249163994116259840';
 const defaultAccounts = [{ id: 'owner', name: 'FlipVault Owner', discordId: ownerDiscordId, discordName: 'FlipVault Owner', roles: ['Owner', 'Admin'] }];
 const normalizeIdentity = (value) => value.trim().toLowerCase();
@@ -75,7 +76,7 @@ if (savedProfile) {
 const applyTheme = (theme) => { document.body.dataset.theme = theme || 'coast'; };
 const escapeHtml = (value) => value.replace(/[&<>'"]/g, (character) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[character]));
 const renderAvatar = (avatar, name) => { profileAvatar.textContent = avatar ? '' : (name || 'D').charAt(0).toUpperCase(); profileAvatar.style.backgroundImage = avatar ? `url(${avatar})` : ''; profileAvatar.classList.toggle('has-image', Boolean(avatar)); };
-const renderAdminPanel = () => { const isAdmin = hasRole(currentAccount(), 'Admin'); adminButton.hidden = !isAdmin; if (!isAdmin) { adminDrawer.hidden = true; return; } const query = accountSearch.value.trim().toLowerCase(); const visibleAccounts = accounts.filter((account) => [account.name, account.discordName, account.discordId].some((value) => value?.toLowerCase().includes(query))); accountList.innerHTML = visibleAccounts.length ? visibleAccounts.map((account) => { const safeName = escapeHtml(account.name); const roles = accountRoles(account); const deleteButton = account.id === activeAccountId ? '' : `<button class="delete-account" type="button" data-delete-account="${account.id}" aria-label="Delete ${safeName}">Delete</button>`; return `<div class="account-row"><div><strong>${safeName}</strong><small>${account.id === activeAccountId ? 'You' : roleSummary(account)}</small></div><div class="account-actions"><div class="role-picker" aria-label="Roles for ${safeName}">${roleOptions.map((role) => `<label><input type="checkbox" data-account-id="${account.id}" data-role="${role}" ${roles.some((accountRole) => accountRole.toLowerCase() === role.toLowerCase()) ? 'checked' : ''} />${role}</label>`).join('')}</div>${deleteButton}</div></div>`; }).join('') : '<p class="no-results">No profiles found.</p>'; };
+const renderAdminPanel = () => { const isAdmin = hasRole(currentAccount(), 'Admin'); adminButton.hidden = !isAdmin; pendingSellsButton.hidden = !hasRole(currentAccount(), 'Bussiness Owner'); if (!isAdmin) { adminDrawer.hidden = true; return; } const query = accountSearch.value.trim().toLowerCase(); const visibleAccounts = accounts.filter((account) => [account.name, account.discordName, account.discordId].some((value) => value?.toLowerCase().includes(query))); accountList.innerHTML = visibleAccounts.length ? visibleAccounts.map((account) => { const safeName = escapeHtml(account.name); const roles = accountRoles(account); const deleteButton = account.id === activeAccountId ? '' : `<button class="delete-account" type="button" data-delete-account="${account.id}" aria-label="Delete ${safeName}">Delete</button>`; return `<div class="account-row"><div><strong>${safeName}</strong><small>${account.id === activeAccountId ? 'You' : roleSummary(account)}</small></div><div class="account-actions"><div class="role-picker" aria-label="Roles for ${safeName}">${roleOptions.map((role) => `<label><input type="checkbox" data-account-id="${account.id}" data-role="${role}" ${roles.some((accountRole) => accountRole.toLowerCase() === role.toLowerCase()) ? 'checked' : ''} />${role}</label>`).join('')}</div>${deleteButton}</div></div>`; }).join('') : '<p class="no-results">No profiles found.</p>'; };
 applyTheme(savedProfile?.theme);
 renderAvatar(pendingAvatar, savedProfile?.name);
 profileRole.textContent = roleSummary(currentAccount());
@@ -151,6 +152,9 @@ const catalogCloseButton = document.querySelector('.catalog-close');
 const sellCloseButton = document.querySelector('.sell-close');
 const sellForm = document.querySelector('#sell-form');
 const sellCancelButton = document.querySelector('.sell-cancel');
+const pendingSellsOverlay = document.querySelector('#pending-sells-overlay');
+const pendingSellsList = document.querySelector('#pending-sells-list');
+const pendingSellsCloseButton = document.querySelector('.pending-sells-close');
 
 const setCatalogTitle = (tabName) => {
   const catalogTitle = document.querySelector('#catalog-title');
@@ -207,6 +211,28 @@ const closeSellModal = () => {
   if (sellForm) sellForm.reset();
 };
 
+const renderPendingSells = () => {
+  const savedListings = JSON.parse(localStorage.getItem('flipvault-listings') || '[]');
+  if (!pendingSellsList) return;
+  pendingSellsList.innerHTML = savedListings.length ? savedListings.map((listing) => `<article class="pending-sell-row"><div><h3>${escapeHtml(String(listing.itemName || 'Untitled item'))}</h3><p>${escapeHtml(String(listing.description || 'No description provided.'))}</p><p>${escapeHtml(String(listing.contactMethod || 'Contact'))}: ${escapeHtml(String(listing.contact || 'No contact provided'))}</p></div><div class="pending-sell-meta"><strong>$${escapeHtml(String(listing.price || '0'))}</strong><br />${escapeHtml(String(listing.category || 'Uncategorized'))}<br />${escapeHtml(String(listing.condition || 'Condition unknown'))}</div></article>`).join('') : '<p class="pending-sell-empty">No pending sells yet.</p>';
+};
+
+const openPendingSells = () => {
+  if (!hasRole(currentAccount(), 'Bussiness Owner')) return;
+  renderPendingSells();
+  if (pendingSellsOverlay) pendingSellsOverlay.hidden = false;
+};
+
+const closePendingSells = () => {
+  if (pendingSellsOverlay) pendingSellsOverlay.hidden = true;
+};
+
+pendingSellsButton?.addEventListener('click', openPendingSells);
+pendingSellsCloseButton?.addEventListener('click', closePendingSells);
+pendingSellsOverlay?.addEventListener('click', (event) => {
+  if (event.target === pendingSellsOverlay) closePendingSells();
+});
+
 sellCloseButton?.addEventListener('click', closeSellModal);
 sellCancelButton?.addEventListener('click', closeSellModal);
 sellOverlay?.addEventListener('click', (event) => {
@@ -238,6 +264,7 @@ sellForm?.addEventListener('submit', (event) => {
 document.addEventListener('keydown', (event) => {
   if (event.key === 'Escape' && catalogOverlay && !catalogOverlay.hidden) closeCatalogTab();
   if (event.key === 'Escape' && sellOverlay && !sellOverlay.hidden) closeSellModal();
+  if (event.key === 'Escape' && pendingSellsOverlay && !pendingSellsOverlay.hidden) closePendingSells();
 });
 
 if (catalogOverlay) {

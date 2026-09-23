@@ -26,9 +26,9 @@ button { font: inherit; }
 .site-nav { display: flex; align-items: center; gap: 36px; font-size: 12px; font-weight: 700; }
 .site-nav a:not(.nav-discord) { color: #51485d; }
 .site-nav .nav-forms { color: #130d1d; }
-.nav-profile, .nav-admin { padding: 0; border: 0; background: transparent; color: #51485d; font: inherit; cursor: pointer; }.nav-admin { color: var(--orange); }
+.nav-profile, .nav-admin, .nav-pending { padding: 0; border: 0; background: transparent; color: #51485d; font: inherit; cursor: pointer; }.nav-admin { color: var(--orange); }.nav-pending { color: var(--orange); font-size: 10px; text-transform: lowercase; }
 .nav-profile:hover { color: var(--orange); }
-.site-nav a:hover, .text-link:hover { color: var(--orange); }
+.site-nav a:hover, .site-nav button:hover, .text-link:hover { color: var(--orange); }
 .nav-discord { border-bottom: 1px solid var(--ink); padding: 7px 0; }
 .nav-discord span, .text-link span, .button span { color: var(--orange); margin-left: 9px; }
 .menu-toggle { display: none; background: transparent; border: 0; }
@@ -108,6 +108,16 @@ h2 { margin: 26px 0 0; font-size: clamp(43px, 5vw, 69px); line-height: .96; font
 .sell-form textarea { min-height: 110px; resize: vertical; }
 .sell-actions { display: flex; align-items: center; gap: 14px; margin-top: 4px; }
 .sell-cancel { border: 1px solid var(--line); background: transparent; color: var(--ink); }
+.pending-sells-overlay { position: fixed; inset: 0; z-index: 31; display: grid; place-items: center; padding: 20px; background: rgba(19, 13, 29, .52); }
+.pending-sells-overlay[hidden] { display: none !important; }
+.pending-sells-modal { position: relative; width: min(760px, 94vw); max-height: 84vh; overflow: auto; padding: 28px; background: var(--paper); border: 1px solid var(--line); box-shadow: 0 30px 60px rgba(19, 13, 29, .18); }
+.pending-sells-close { position: absolute; top: 18px; right: 18px; width: 34px; height: 34px; border: 1px solid var(--line); background: transparent; color: var(--ink); font-size: 28px; line-height: 1; cursor: pointer; }
+.pending-sells-modal h2 { margin: 18px 0 24px; font-size: clamp(40px, 5vw, 62px); }
+.pending-sell-row { display: grid; grid-template-columns: 1fr auto; gap: 16px; padding: 18px 0; border-top: 1px solid var(--line); }
+.pending-sell-row h3 { margin: 0 0 7px; font: 600 22px var(--display); }
+.pending-sell-row p { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.6; }
+.pending-sell-meta { color: var(--orange); font: 10px var(--mono); text-align: right; text-transform: uppercase; letter-spacing: .06em; }
+.pending-sell-empty { margin: 0; padding: 22px 0; border-top: 1px solid var(--line); color: var(--muted); font: 11px var(--mono); }
 .card-police { background-image: url("https://images.unsplash.com/photo-1485968579580-b6d095142e6e?auto=format&fit=crop&w=700&q=80"); }
 .card-medical { background-image: url("https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=700&q=80"); }
 .card-business { background-image: url("https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=700&q=80"); }
