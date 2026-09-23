@@ -130,3 +130,67 @@ document.querySelectorAll('.site-nav a').forEach((link) => {
     menuToggle?.setAttribute('aria-expanded', 'false');
   });
 });
+
+const catalogTabs = document.querySelectorAll('.category-tab');
+const catalogPanels = document.querySelectorAll('.catalog-panel');
+const departmentLinks = document.querySelectorAll('[data-open-tab]');
+const catalogOverlay = document.querySelector('#catalog');
+const catalogCloseButton = document.querySelector('.catalog-close');
+
+const setCatalogTitle = (tabName) => {
+  const catalogTitle = document.querySelector('#catalog-title');
+  const titleMap = { cloth: 'Cloth', shoes: 'Shoes', electronics: 'Electronics' };
+  if (catalogTitle) catalogTitle.textContent = titleMap[tabName] || 'Shop the vault';
+};
+
+const openCatalogTab = (tabName) => {
+  catalogTabs.forEach((tab) => {
+    const isActive = tab.dataset.tab === tabName;
+    tab.classList.toggle('active', isActive);
+    tab.setAttribute('aria-selected', String(isActive));
+  });
+
+  catalogPanels.forEach((panel) => {
+    const isActive = panel.id === `panel-${tabName}`;
+    panel.classList.toggle('active', isActive);
+    panel.hidden = !isActive;
+  });
+
+  setCatalogTitle(tabName);
+  if (catalogOverlay) catalogOverlay.hidden = false;
+};
+
+const closeCatalogTab = () => {
+  if (catalogOverlay) catalogOverlay.hidden = true;
+};
+
+catalogTabs.forEach((tab) => {
+  tab.addEventListener('click', () => openCatalogTab(tab.dataset.tab));
+});
+
+catalogCloseButton?.addEventListener('click', closeCatalogTab);
+catalogOverlay?.addEventListener('click', (event) => {
+  if (event.target === catalogOverlay) closeCatalogTab();
+});
+
+departmentLinks.forEach((link) => {
+  link.addEventListener('click', (event) => {
+    const targetTab = link.dataset.openTab;
+    if (!targetTab) return;
+    event.preventDefault();
+    const isAlreadyOpen = !catalogOverlay?.hidden && document.querySelector('.category-tab.active')?.dataset.tab === targetTab;
+    if (isAlreadyOpen) {
+      closeCatalogTab();
+      return;
+    }
+    openCatalogTab(targetTab);
+  });
+});
+
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape' && catalogOverlay && !catalogOverlay.hidden) closeCatalogTab();
+});
+
+if (catalogOverlay) {
+  catalogOverlay.hidden = true;
+}

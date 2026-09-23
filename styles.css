@@ -72,7 +72,18 @@ h2 { margin: 26px 0 0; font-size: clamp(43px, 5vw, 69px); line-height: .96; font
 .section-heading h2 { margin-top: 21px; }
 .department-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
 .department-card { display: block; min-height: 380px; position: relative; overflow: hidden; color: var(--paper); background-position: center; background-size: cover; }
-.cloth-listings { max-width: 1320px; margin: 0 auto; padding: 0 56px 118px; }
+.catalog-tabs { position: fixed; inset: 0; z-index: 18; display: grid; place-items: center; padding: 24px; background: rgba(19, 13, 29, .48); }
+.catalog-tabs[hidden] { display: none !important; }
+.catalog-modal { position: relative; width: min(980px, 92vw); max-height: 84vh; overflow: auto; padding: 28px 28px 22px; background: var(--paper); border: 1px solid var(--line); box-shadow: 0 28px 50px rgba(19, 13, 29, .2); }
+.catalog-close { position: absolute; top: 18px; right: 18px; width: 34px; height: 34px; border: 1px solid var(--line); background: transparent; color: var(--ink); font-size: 28px; line-height: 1; cursor: pointer; }
+.catalog-close:hover { color: var(--orange); border-color: var(--orange); }
+.catalog-header { margin-bottom: 18px; }
+.catalog-header h2 { margin-top: 16px; }
+.catalog-switcher { display: flex; align-items: center; gap: 12px; margin: 0 0 26px; border-bottom: 1px solid var(--line); }
+.category-tab { padding: 12px 18px; border: 1px solid transparent; border-bottom: 0; background: transparent; color: var(--muted); font: 700 12px var(--mono); letter-spacing: .08em; text-transform: uppercase; cursor: pointer; }
+.category-tab.active { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.catalog-panel { display: none; }
+.catalog-panel.active { display: block; }
 .listing-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 26px; }
 .listing-card { background: rgba(255, 255, 255, 0.5); border: 1px solid var(--line); overflow: hidden; transition: transform .2s ease, box-shadow .2s ease; }
 .listing-card:hover { transform: translateY(-4px); box-shadow: 0 18px 34px rgba(19, 13, 29, .08); }
@@ -131,6 +142,6 @@ body[data-theme="midnight"] { --paper: #e9f0ee; --ink: #101e25; --lime: #67d1bd;
   .site-header, .section-grid, .departments, .site-footer { padding-left: 25px; padding-right: 25px; }
   .site-header { min-height: 78px; }.menu-toggle { display: flex; flex-direction: column; gap: 5px; padding: 10px 0 10px 10px; cursor: pointer; }.menu-toggle span { width: 25px; height: 1px; background: var(--ink); }
   .site-nav { display: none; position: absolute; z-index: 5; top: 78px; left: 0; right: 0; padding: 24px 25px; background: var(--paper); flex-direction: column; align-items: flex-start; gap: 20px; border-bottom: 1px solid var(--line); }.site-nav.open { display: flex; }.nav-profile { padding: 0; }
-  .hero, .world, .start { grid-template-columns: 1fr; }.hero { padding-top: 10px; }.hero-copy { padding: 48px 0 48px; }.hero-note { margin-top: 45px; }.hero-visual { min-height: 400px; }.world { padding-top: 90px; padding-bottom: 85px; }.world-content { padding: 55px 0 0; }.departments { padding-top: 40px; padding-bottom: 85px; }.section-heading { align-items: start; flex-direction: column; gap: 27px; }.department-grid { grid-template-columns: repeat(2, 1fr); }.department-card { min-height: 310px; }.cloth-listings { padding-left: 25px; padding-right: 25px; }.listing-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }.start-copy { padding: 55px 0 65px; }.start-visual { min-height: 250px; }.site-footer { min-height: 160px; flex-wrap: wrap; gap: 17px; padding-top: 30px; padding-bottom: 30px; }.site-footer p { order: 3; width: 100%; }
+  .hero, .world, .start { grid-template-columns: 1fr; }.hero { padding-top: 10px; }.hero-copy { padding: 48px 0 48px; }.hero-note { margin-top: 45px; }.hero-visual { min-height: 400px; }.world { padding-top: 90px; padding-bottom: 85px; }.world-content { padding: 55px 0 0; }.departments { padding-top: 40px; padding-bottom: 85px; }.section-heading { align-items: start; flex-direction: column; gap: 27px; }.department-grid { grid-template-columns: repeat(2, 1fr); }.department-card { min-height: 310px; }.catalog-modal { width: min(92vw, 760px); padding: 22px 18px 18px; }.listing-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }.start-copy { padding: 55px 0 65px; }.start-visual { min-height: 250px; }.site-footer { min-height: 160px; flex-wrap: wrap; gap: 17px; padding-top: 30px; padding-bottom: 30px; }.site-footer p { order: 3; width: 100%; }
 }
 @media (max-width: 480px) { h1 { font-size: 56px; }.department-grid { grid-template-columns: 1fr 1fr; gap: 7px; }.department-card { min-height: 260px; }.card-content { padding: 16px; }.card-content h3 { font-size: 18px; }.card-arrow { right: 16px; bottom: 16px; }.listing-grid { grid-template-columns: 1fr; }.start-actions { align-items: flex-start; flex-direction: column; gap: 21px; } }
