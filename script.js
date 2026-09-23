@@ -136,6 +136,11 @@ const catalogPanels = document.querySelectorAll('.catalog-panel');
 const departmentLinks = document.querySelectorAll('[data-open-tab]');
 const catalogOverlay = document.querySelector('#catalog');
 const catalogCloseButton = document.querySelector('.catalog-close');
+const sellOverlay = document.querySelector('#sell-overlay');
+const sellCloseButton = document.querySelector('.sell-close');
+const sellForm = document.querySelector('#sell-form');
+const sellTriggers = document.querySelectorAll('[data-sell-trigger]');
+const sellCancelButton = document.querySelector('.sell-cancel');
 
 const setCatalogTitle = (tabName) => {
   const catalogTitle = document.querySelector('#catalog-title');
@@ -187,10 +192,58 @@ departmentLinks.forEach((link) => {
   });
 });
 
+const openSellModal = () => {
+  if (sellOverlay) sellOverlay.hidden = false;
+};
+
+const closeSellModal = () => {
+  if (sellOverlay) sellOverlay.hidden = true;
+  if (sellForm) sellForm.reset();
+};
+
+sellTriggers.forEach((link) => {
+  link.addEventListener('click', (event) => {
+    event.preventDefault();
+    openSellModal();
+  });
+});
+
+sellCloseButton?.addEventListener('click', closeSellModal);
+sellCancelButton?.addEventListener('click', closeSellModal);
+sellOverlay?.addEventListener('click', (event) => {
+  if (event.target === sellOverlay) closeSellModal();
+});
+
+sellForm?.addEventListener('submit', (event) => {
+  event.preventDefault();
+  const formData = new FormData(sellForm);
+  const savedListings = JSON.parse(localStorage.getItem('flipvault-listings') || '[]');
+  savedListings.push({
+    itemName: formData.get('itemName'),
+    category: formData.get('category'),
+    price: formData.get('price'),
+    condition: formData.get('condition'),
+    description: formData.get('description'),
+    contact: formData.get('contact'),
+    contactMethod: formData.get('contactMethod'),
+    shipping: formData.get('shipping'),
+    createdAt: new Date().toISOString(),
+  });
+  localStorage.setItem('flipvault-listings', JSON.stringify(savedListings));
+  closeSellModal();
+  toast.textContent = 'Listing submitted';
+  toast.classList.add('show');
+  window.setTimeout(() => toast.classList.remove('show'), 2200);
+});
+
 document.addEventListener('keydown', (event) => {
   if (event.key === 'Escape' && catalogOverlay && !catalogOverlay.hidden) closeCatalogTab();
+  if (event.key === 'Escape' && sellOverlay && !sellOverlay.hidden) closeSellModal();
 });
 
 if (catalogOverlay) {
   catalogOverlay.hidden = true;
+}
+if (sellOverlay) {
+  sellOverlay.hidden = true;
 }
