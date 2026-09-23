@@ -1,6 +1,18 @@
 const menuToggle = document.querySelector('.menu-toggle');
 const siteNav = document.querySelector('.site-nav');
 const toast = document.querySelector('.toast');
+const sellOverlay = document.querySelector('#sell-overlay');
+const openSellModal = () => {
+  if (sellOverlay) sellOverlay.hidden = false;
+};
+
+document.addEventListener('click', (event) => {
+  const sellTrigger = event.target.closest('[data-sell-trigger]');
+  if (!sellTrigger) return;
+  event.preventDefault();
+  openSellModal();
+});
+
 const profileButton = document.querySelector('.nav-profile');
 const adminButton = document.querySelector('.nav-admin');
 const profilePanel = document.querySelector('.profile-panel');
@@ -136,10 +148,8 @@ const catalogPanels = document.querySelectorAll('.catalog-panel');
 const departmentLinks = document.querySelectorAll('[data-open-tab]');
 const catalogOverlay = document.querySelector('#catalog');
 const catalogCloseButton = document.querySelector('.catalog-close');
-const sellOverlay = document.querySelector('#sell-overlay');
 const sellCloseButton = document.querySelector('.sell-close');
 const sellForm = document.querySelector('#sell-form');
-const sellTriggers = document.querySelectorAll('[data-sell-trigger]');
 const sellCancelButton = document.querySelector('.sell-cancel');
 
 const setCatalogTitle = (tabName) => {
@@ -192,21 +202,10 @@ departmentLinks.forEach((link) => {
   });
 });
 
-const openSellModal = () => {
-  if (sellOverlay) sellOverlay.hidden = false;
-};
-
 const closeSellModal = () => {
   if (sellOverlay) sellOverlay.hidden = true;
   if (sellForm) sellForm.reset();
 };
-
-sellTriggers.forEach((link) => {
-  link.addEventListener('click', (event) => {
-    event.preventDefault();
-    openSellModal();
-  });
-});
 
 sellCloseButton?.addEventListener('click', closeSellModal);
 sellCancelButton?.addEventListener('click', closeSellModal);
