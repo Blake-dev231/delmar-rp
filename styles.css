@@ -72,6 +72,18 @@ h2 { margin: 26px 0 0; font-size: clamp(43px, 5vw, 69px); line-height: .96; font
 .section-heading h2 { margin-top: 21px; }
 .department-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
 .department-card { display: block; min-height: 380px; position: relative; overflow: hidden; color: var(--paper); background-position: center; background-size: cover; }
+.cloth-listings { max-width: 1320px; margin: 0 auto; padding: 0 56px 118px; }
+.listing-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 26px; }
+.listing-card { background: rgba(255, 255, 255, 0.5); border: 1px solid var(--line); overflow: hidden; transition: transform .2s ease, box-shadow .2s ease; }
+.listing-card:hover { transform: translateY(-4px); box-shadow: 0 18px 34px rgba(19, 13, 29, .08); }
+.listing-card img { display: block; width: 100%; height: 310px; object-fit: cover; }
+.listing-info { padding: 22px 20px 18px; }
+.listing-meta { display: flex; justify-content: space-between; gap: 12px; color: var(--orange); font: 10px var(--mono); text-transform: uppercase; letter-spacing: .08em; }
+.listing-info h3 { margin: 16px 0 10px; font: 600 24px var(--display); letter-spacing: -.04em; }
+.listing-info p { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.6; }
+.listing-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 20px; }
+.listing-footer strong { font: 700 20px var(--display); }
+.listing-footer button { border: 1px solid var(--line); background: transparent; color: var(--ink); padding: 8px 12px; font: 700 10px var(--mono); letter-spacing: .08em; text-transform: uppercase; cursor: pointer; }
 .card-police { background-image: url("https://images.unsplash.com/photo-1485968579580-b6d095142e6e?auto=format&fit=crop&w=700&q=80"); }
 .card-medical { background-image: url("https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=700&q=80"); }
 .card-business { background-image: url("https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=700&q=80"); }
@@ -119,6 +131,6 @@ body[data-theme="midnight"] { --paper: #e9f0ee; --ink: #101e25; --lime: #67d1bd;
   .site-header, .section-grid, .departments, .site-footer { padding-left: 25px; padding-right: 25px; }
   .site-header { min-height: 78px; }.menu-toggle { display: flex; flex-direction: column; gap: 5px; padding: 10px 0 10px 10px; cursor: pointer; }.menu-toggle span { width: 25px; height: 1px; background: var(--ink); }
   .site-nav { display: none; position: absolute; z-index: 5; top: 78px; left: 0; right: 0; padding: 24px 25px; background: var(--paper); flex-direction: column; align-items: flex-start; gap: 20px; border-bottom: 1px solid var(--line); }.site-nav.open { display: flex; }.nav-profile { padding: 0; }
-  .hero, .world, .start { grid-template-columns: 1fr; }.hero { padding-top: 10px; }.hero-copy { padding: 48px 0 48px; }.hero-note { margin-top: 45px; }.hero-visual { min-height: 400px; }.world { padding-top: 90px; padding-bottom: 85px; }.world-content { padding: 55px 0 0; }.departments { padding-top: 40px; padding-bottom: 85px; }.section-heading { align-items: start; flex-direction: column; gap: 27px; }.department-grid { grid-template-columns: repeat(2, 1fr); }.department-card { min-height: 310px; }.start-copy { padding: 55px 0 65px; }.start-visual { min-height: 250px; }.site-footer { min-height: 160px; flex-wrap: wrap; gap: 17px; padding-top: 30px; padding-bottom: 30px; }.site-footer p { order: 3; width: 100%; }
+  .hero, .world, .start { grid-template-columns: 1fr; }.hero { padding-top: 10px; }.hero-copy { padding: 48px 0 48px; }.hero-note { margin-top: 45px; }.hero-visual { min-height: 400px; }.world { padding-top: 90px; padding-bottom: 85px; }.world-content { padding: 55px 0 0; }.departments { padding-top: 40px; padding-bottom: 85px; }.section-heading { align-items: start; flex-direction: column; gap: 27px; }.department-grid { grid-template-columns: repeat(2, 1fr); }.department-card { min-height: 310px; }.cloth-listings { padding-left: 25px; padding-right: 25px; }.listing-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }.start-copy { padding: 55px 0 65px; }.start-visual { min-height: 250px; }.site-footer { min-height: 160px; flex-wrap: wrap; gap: 17px; padding-top: 30px; padding-bottom: 30px; }.site-footer p { order: 3; width: 100%; }
 }
-@media (max-width: 480px) { h1 { font-size: 56px; }.department-grid { grid-template-columns: 1fr 1fr; gap: 7px; }.department-card { min-height: 260px; }.card-content { padding: 16px; }.card-content h3 { font-size: 18px; }.card-arrow { right: 16px; bottom: 16px; }.start-actions { align-items: flex-start; flex-direction: column; gap: 21px; } }
+@media (max-width: 480px) { h1 { font-size: 56px; }.department-grid { grid-template-columns: 1fr 1fr; gap: 7px; }.department-card { min-height: 260px; }.card-content { padding: 16px; }.card-content h3 { font-size: 18px; }.card-arrow { right: 16px; bottom: 16px; }.listing-grid { grid-template-columns: 1fr; }.start-actions { align-items: flex-start; flex-direction: column; gap: 21px; } }
