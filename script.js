@@ -35,7 +35,7 @@ const loginDiscordName = document.querySelector('#login-discord-name');
 
 const roleOptions = ['Owner', 'Marketplace Manager', 'Executive', 'Seller Partner', 'Catalog Administrator', 'Buyer', 'Moderator', 'Verified Seller', 'Customer Support', 'Business Seller', 'Admin', 'Exploring the marketplace', 'Local seller', 'Independent buyer'];
 const ownerDiscordId = '1249163994116259840';
-const defaultAccounts = [{ id: 'owner', name: 'Delmar Owner', discordId: ownerDiscordId, discordName: 'Delmar Owner', roles: ['Owner', 'Admin'] }];
+const defaultAccounts = [{ id: 'owner', name: 'FlipVault Owner', discordId: ownerDiscordId, discordName: 'FlipVault Owner', roles: ['Owner', 'Admin'] }];
 const normalizeIdentity = (value) => value.trim().toLowerCase();
 const hadStoredAccounts = Boolean(localStorage.getItem('delmar-accounts'));
 let accounts = JSON.parse(localStorage.getItem('delmar-accounts') || 'null') || defaultAccounts;

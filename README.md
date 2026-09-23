@@ -1,6 +1,6 @@
-# ReUp Market
+# FlipVault
 
-The ReUp Market marketplace website. It is a lightweight static site, so it can be previewed without a build step.
+The FlipVault marketplace website. It is a lightweight static site, so it can be previewed without a build step.
 
 ## Run locally
 
